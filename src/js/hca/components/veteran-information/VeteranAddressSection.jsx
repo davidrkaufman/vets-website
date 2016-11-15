@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Address from '../../../common/components/questions/Address';
+import Address from '../questions/Address';
 import { veteranUpdateField } from '../../actions';
 
 /**
@@ -10,6 +10,19 @@ import { veteranUpdateField } from '../../actions';
  * `reviewSection` - Boolean. Hides components that are only needed for ReviewAndSubmitSection.
  */
 class VeteranAddressSection extends React.Component {
+  constructor() {
+    super();
+    this.confirmEmail = this.confirmEmail.bind(this);
+  }
+
+  confirmEmail() {
+    if (this.props.data.email.value !== this.props.data.emailConfirmation.value) {
+      return 'Please ensure your entries match';
+    }
+
+    return undefined;
+  }
+
   render() {
     let content;
 
@@ -19,6 +32,14 @@ class VeteranAddressSection extends React.Component {
           <tr>
             <td>Street:</td>
             <td>{this.props.data.veteranAddress.street.value}</td>
+          </tr>
+          <tr>
+            <td>Line 2:</td>
+            <td>{this.props.data.veteranAddress.street2.value}</td>
+          </tr>
+          <tr>
+            <td>Line 3:</td>
+            <td>{this.props.data.veteranAddress.street3.value}</td>
           </tr>
           <tr>
             <td>City:</td>
@@ -43,6 +64,9 @@ class VeteranAddressSection extends React.Component {
         <legend>Permanent Address</legend>
         <p>(<span className="hca-required-span">*</span>) Indicates a required field</p>
         <div className="input-section">
+          <p>For locations outside the U.S., enter "City,Country" in the City field
+              (e.g., "Paris,France"), and select Foreign Country for State.
+          </p>
           <Address required
               value={this.props.data.veteranAddress}
               onUserInput={(update) => {this.props.onStateChange('veteranAddress', update);}}/>
